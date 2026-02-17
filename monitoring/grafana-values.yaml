@@ -1,0 +1,36 @@
+adminUser: admin
+adminPassword: Admin@Grafana123
+
+persistence:
+  enabled: true
+  storageClass: gp2
+  size: 5Gi
+
+service:
+  type: LoadBalancer
+  port: 80
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 300m
+    memory: 512Mi
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://a5dda8920053b4e21a0248eea6b11175-1301354102.eu-west-2.elb.amazonaws.com
+        access: proxy
+        isDefault: true
+        editable: true
+
+      - name: Loki
+        type: loki
+        url: http://loki.monitoring.svc.cluster.local:3100
+        access: proxy
+        editable: true

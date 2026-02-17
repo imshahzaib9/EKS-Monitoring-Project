@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-eks-app-service
+  namespace: nodejs-app
+  labels:
+    app: nodejs-eks-app
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3000"
+spec:
+  type: LoadBalancer
+  selector:
+    app: nodejs-eks-app
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+

@@ -1,0 +1,36 @@
+server:
+  persistentVolume:
+    enabled: true
+    storageClass: gp2
+    size: 8Gi
+
+  retention: "7d"
+
+  resources:
+    requests:
+      cpu: 300m
+      memory: 512Mi
+    limits:
+      cpu: 700m
+      memory: 1Gi
+
+  # ✅ Expose Prometheus via LoadBalancer
+  service:
+    type: LoadBalancer
+    port: 9090
+
+# ❌ Alertmanager Removed Completely
+alertmanager:
+  enabled: false
+
+# ❌ Pushgateway Disabled
+pushgateway:
+  enabled: false
+
+# ✅ Only a unique custom job to scrape localhost
+serverFiles:
+  prometheus.yml:
+    scrape_configs:
+      - job_name: 'custom-prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
