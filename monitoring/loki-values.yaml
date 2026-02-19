@@ -1,9 +1,9 @@
 loki:
   auth_enabled: false
-
   commonConfig:
     replication_factor: 1
-
+  storage:
+    type: filesystem
   schemaConfig:
     configs:
       - from: "2024-01-01"
@@ -13,27 +13,25 @@ loki:
         index:
           prefix: index_
           period: 24h
-
-  storage:
-    type: filesystem
-
   limits_config:
     retention_period: 168h
 
 singleBinary:
   replicas: 1
-
   persistence:
     enabled: true
     size: 10Gi
-
   resources:
     requests:
       cpu: 100m
-      memory: 256Mi
+      memory: 200Mi
     limits:
-      cpu: 500m
-      memory: 512Mi
+      cpu: 400m
+      memory: 400Mi
+  service:
+    enabled: true       # ✅ Must be true to create a LoadBalancer
+    type: LoadBalancer  # ✅ Create external ELB
+    port: 3100
 
 gateway:
   enabled: false
@@ -46,3 +44,6 @@ write:
 
 backend:
   replicas: 0
+
+chunksCache:
+  enabled: false
